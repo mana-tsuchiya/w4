@@ -1,56 +1,43 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width">
+const customName = document.getElementById('主人公の名前を入力');
+const randomize = document.querySelector('.randomize');
+const story = document.querySelector('.story');
 
-    <title>Silly story generator</title>
+function randomValueFromArray(array){
+  const random = Math.floor(Math.random()*array.length);
+  return array[random];
+}
 
-    <style>
+const storyText = 'その日は、とても暑かった。 :insertx:は外に出た。 彼は:inserty:に向かった。 目的地に向かう途中、:insertz:。 :insertx:はそれに驚いたが、Bobはそれに動じない。 それにしても今日は暑い。';
+const insertX = ['おしゃい', '折笠千斗', 'サルノリ'];
+const insertY = ['友達の家', '新宿', 'セブンイレブン'];
+const insertZ = ['雨が降ってきた', '犬に吠えられた', '園児のお散歩を目撃した'];
 
-    body {
-      font-family: helvetica, sans-serif;
-      width: 350px;
-    }
+randomize.addEventListener('click', result);
 
-    label {
-      font-weight: bold;  
-    }
+function result() {
+  let newStory = storyText;
 
-    div {
-      padding-bottom: 20px;
-    }
+  const xItem = randomValueFromArray(insertX);
+  const yItem = randomValueFromArray(insertY);
+  const zItem = randomValueFromArray(insertZ);
 
-    input[type="text"] {
-      padding: 5px;
-      width: 150px;
-    }
+  newStory = newStory.replace(':insertx:',xItem);
+  newStory = newStory.replace(':insertx:',xItem);
+  newStory = newStory.replace(':inserty:',yItem);
+  newStory = newStory.replace(':insertz:',zItem);
 
-    p {
-      background: #FFC125;
-      color: #5E2612;
-      padding: 10px;
-      visibility: hidden;
-    }
+  if (customName.value !== '') {
+    const name = customName.value;
+    newStory = newStory.replace('Bob', name);
+  }
 
-    </style>
-  </head>
+  if (document.getElementById("日本").checked) {
+    const weight = `${Math.round(300*0.0714286)} stone`;
+    const temperature =  `${Math.round((94-32) * 5 / 9)} centigrade`;
+    newStory = newStory.replace('94 fahrenheit', temperature);
+    newStory = newStory.replace('300 pounds', weight);
+  }
 
-  <body>
-    <div>
-      <label for="customname">Enter custom name:</label>
-      <input id="customname" type="text" placeholder="">
-    </div>
-    <div>
-      <label for="us">US</label><input id="us" type="radio" name="ukus" value="us" checked>
-      <label for="uk">UK</label><input id="uk" type="radio" name="ukus" value="uk">
-    </div>
-    <div>
-      <button class="randomize">Generate random story</button>
-    </div>
-    <!-- Thanks a lot to Willy Aguirre for his help with the code for this assessment -->
-    <p class="story"></p>
-    <script src="main.js"></script>
-  </body>
-</html>
+  story.textContent = newStory;
+  story.style.visibility = 'visible';
+}
